@@ -1,0 +1,21 @@
+create table customer(adhaar varchar2(15),mobile_no varchar2(12) not null,name varchar2(30),email_id varchar2(30),primary key(adhaar));
+create table login(login_id varchar2(15),password varchar2(15),primary key(login_id));
+create table tickets(price number,source varchar2(15),destination varchar2(15),company varchar2(15),passenger_name varchar2(30),ticket_id varchar2(15),seat_no number,primary key(ticket_id));
+create table payment(card_id varchar2(15),pin varchar2(15),type varchar2(20),recipt_no number(13),ticket_id varchar2(15),primary key(ticket_id),foreign key(ticket_id) references tickets(ticket_id)); 
+create table airlines(id varchar2(15),name varchar2(15),city varchar2(15),country varchar2(15),type varchar2(30),primary key(id));
+create table airport(id varchar2(15),name varchar2(15), city  varchar2(15),primary key(id));
+create table employees(emp_id varchar2(15),name varchar2(15),age number,job varchar2(15),salary number,primary key(emp_id));
+create table passengers(p_id varchar2(15),name varchar2(30),primary key(p_id),foreign key(p_id) references tickets(ticket_id));
+create table flights(flight_no varchar2(15),luggage_limit_kg number,no_of_seats number,primary key(flight_no));  
+create table food_available(item_name varchar2(15),p_id varchar2(15),primary key(p_id),foreign key(p_id) references passengers(p_id));
+create table class(type varchar2(20),fare number,flight_no varchar2(15),primary key(flight_no),foreign key(flight_no) references flights(flight_no));
+create table staff(Pilot_name varchar2(30),Co_pilot_name varchar2(30),no_of_airstewards number,flight_no varchar2(15),primary key(flight_no));
+create table flight_leg1(leg_no varchar2(15),airline_id varchar2(15),primary key(airline_id),foreign key(leg_no) references flights(flight_no),foreign key(airline_id) references airlines(id));
+create table flight_leg2(leg_no varchar2(15),airport_id varchar2(15),primary key(airport_id),foreign key(leg_no) references flights(flight_no),foreign key(airport_id) references airport(id));
+### Full join flight_leg1 and flight_leg2)
+create table tickets_cancelled(ticket_id varchar2(15) unique);
+### Subtract rows table tickets with table tickets_cancelled 
+create table flight_boarded(flight_no varchar2(15),p_id varchar2(15),primary key(p_id),foreign key(p_id) references passengers(p_id));
+### Calculate cost of ticket for customer
+delete from loan where tickets.ticket_id in (select ticket_id from tickets_cancelled);
+### We have to put the Python files in Idle to open them 
